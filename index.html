@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¿Dónde está BOC?</title>
+  <link rel="icon" href="./logo DEBOC.png">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --white: #f0ebe3;
+      --red: #c8233a;
+      --gray: #1e1e1e;
+      --mid: #3a3a3a;
+      --muted: #888;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Space Mono', monospace;
+      cursor: crosshair;
+      overflow-x: hidden;
+    }
+
+    /* GRAIN OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 2.5rem;
+      background: rgba(10, 10, 10, 0.92);
+      border-bottom: 1px solid #222;
+      backdrop-filter: blur(4px);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .nav-logo span {
+      color: var(--red);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    nav ul a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav ul a:hover {
+      color: var(--white);
+    }
+
+        /* ── INTEGRANTES ── */
+    #integrantes { padding:6rem 2.5rem; max-width:1100px; margin:0 auto; }
+    .members-grid { display:grid; grid-template-columns:repeat(5,1fr); border:1px solid #1e1e1e; }
+    .member-card {
+      padding:2.5rem 1.5rem 2rem;
+      border-right:1px solid #1e1e1e;
+      position:relative;
+      overflow:hidden;
+      transition:background 0.3s;
+      cursor:default;
+    }
+    .member-card:last-child { border-right:none; }
+    .member-card::after {
+      content:'';
+      position:absolute; bottom:0; left:0; right:0;
+      height:3px;
+      background:var(--red);
+      transform:scaleX(0);
+      transform-origin:left;
+      transition:transform 0.3s ease;
+    }
+    .member-card:hover::after { transform:scaleX(1); }
+    .member-card:hover { background:#0f0f0f; }
+    .member-num { font-family:'Bebas Neue',sans-serif; font-size:2.5rem; color:#1e1e1e; line-height:1; margin-bottom:1.5rem; transition:color 0.3s; }
+    .member-card:hover .member-num { color:#2d2d2d; }
+    .member-name { font-family:'Bebas Neue',sans-serif; font-size:1.25rem; letter-spacing:0.04em; color:var(--white); line-height:1.1; margin-bottom:0.6rem; }
+    .member-role { font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--red); line-height:1.5; }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 2.5rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(0deg,
+          transparent,
+          transparent 2px,
+          rgba(255, 255, 255, 0.012) 2px,
+          rgba(255, 255, 255, 0.012) 4px),
+        radial-gradient(ellipse at 20% 80%, rgba(200, 35, 58, 0.18) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(200, 35, 58, 0.08) 0%, transparent 50%),
+        var(--black);
+    }
+
+    .hero-stamp {
+      position: absolute;
+      top: 12rem;
+      right: 3rem;
+      width: 180px;
+      height: 180px;
+      border: 3px solid var(--red);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transform: rotate(15deg);
+      opacity: 0.7;
+      animation: spin-slow 20s linear infinite;
+    }
+
+    .hero-stamp-inner {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--red);
+      line-height: 1.8;
+    }
+
+    @keyframes spin-slow {
+      from {
+        transform: rotate(15deg);
+      }
+
+      to {
+        transform: rotate(375deg);
+      }
+    }
+
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 1rem;
+      position: relative;
+      opacity: 0;
+      animation: fade-up 0.8s ease forwards 0.2s;
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(5rem, 14vw, 13rem);
+      line-height: 0.88;
+      letter-spacing: -0.01em;
+      position: relative;
+      opacity: 0;
+      animation: fade-up 0.8s ease forwards 0.4s;
+    }
+
+    .hero-title .line2 {
+      color: transparent;
+      -webkit-text-stroke: 1px var(--white);
+      display: block;
+    }
+
+    .hero-title .line3 {
+      color: var(--red);
+      display: block;
+    }
+
+    .hero-sub {
+      margin-top: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      opacity: 0;
+      animation: fade-up 0.8s ease forwards 0.6s;
+    }
+
+    .hero-sub p {
+      font-size: 0.75rem;
+      color: var(--muted);
+      max-width: 320px;
+      line-height: 1.7;
+    }
+
+    .hero-line {
+      height: 1px;
+      width: 60px;
+      background: var(--red);
+      flex-shrink: 0;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      right: 2.5rem;
+      writing-mode: vertical-rl;
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      color: var(--muted);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      opacity: 0;
+      animation: fade-up 1s ease forwards 1.2s;
+    }
+
+    .scroll-hint::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 50px;
+      background: var(--muted);
+      animation: shrink 2s ease-in-out infinite;
+    }
+
+    @keyframes shrink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.2;
+      }
+    }
+
+    @keyframes fade-up {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* SECTION BASE */
+    section {
+      padding: 6rem 2.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .section-label::before {
+      content: '';
+      display: inline-block;
+      width: 30px;
+      height: 1px;
+      background: var(--red);
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 6vw, 5rem);
+      letter-spacing: 0.03em;
+      line-height: 1;
+      margin-bottom: 3rem;
+    }
+
+    /* DIVIDER */
+    .divider {
+      border: none;
+      border-top: 1px solid #1e1e1e;
+      margin: 0 2.5rem;
+    }
+
+    /* BIO */
+    #bio {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+      padding: 6rem 2.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .bio-left .section-title {
+      margin-bottom: 1rem;
+    }
+
+    .bio-text {
+      font-size: 0.85rem;
+      line-height: 1.9;
+      color: #bbb;
+      margin-bottom: 1.5rem;
+    }
+
+    .bio-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 2rem;
+    }
+
+    .bio-tag {
+      border: 1px solid #333;
+      padding: 0.35rem 0.9rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .bio-right {
+      position: relative;
+    }
+
+    .bio-img-frame {
+      position: relative;
+      aspect-ratio: 3/4;
+      background: var(--gray);
+      overflow: hidden;
+    }
+
+    .bio-img-frame::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(45deg,
+          transparent,
+          transparent 3px,
+          rgba(200, 35, 58, 0.05) 3px,
+          rgba(200, 35, 58, 0.05) 4px);
+      z-index: 1;
+    }
+
+    .bio-img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      color: #333;
+    }
+
+    .bio-img-placeholder svg {
+      opacity: 0.3;
+    }
+
+    .bio-img-placeholder p {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #444;
+    }
+
+    .bio-corner {
+      position: absolute;
+      bottom: -15px;
+      right: -15px;
+      width: 60%;
+      height: 60%;
+      border: 1px solid var(--red);
+      z-index: -1;
+      opacity: 0.4;
+    }
+
+    /* MUSIC */
+    #musica {
+      padding: 6rem 2.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .tracks {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .track {
+      display: grid;
+      grid-template-columns: 2.5rem 1fr auto auto;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.2rem 0;
+      border-bottom: 1px solid #1a1a1a;
+      cursor: pointer;
+      transition: background 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .track::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 0;
+      background: rgba(200, 35, 58, 0.06);
+      transition: width 0.3s ease;
+    }
+
+    .track:hover::before {
+      width: 100%;
+    }
+
+    .track-num {
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .track:hover .track-num {
+      color: var(--red);
+    }
+
+    .track-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: 0.05em;
+    }
+
+    .track-detail {
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      margin-top: 0.2rem;
+    }
+
+    .track-type {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #444;
+      border: 1px solid #2a2a2a;
+      padding: 0.2rem 0.6rem;
+    }
+
+    .track-dur {
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .embed-container {
+      margin-top: 3rem;
+      background: #111;
+      border: 1px solid #222;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .embed-container p {
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .embed-links {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .embed-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      border: 1px solid #333;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--white);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .embed-link:hover {
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    /* SHOWS */
+    #shows {
+      padding: 6rem 2.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .shows-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .show-item {
+      display: grid;
+      grid-template-columns: 5rem 1fr 1fr auto;
+      align-items: center;
+      gap: 2rem;
+      padding: 1.8rem 0;
+      border-bottom: 1px solid #1a1a1a;
+      position: relative;
+      overflow: hidden;
+      transition: padding-left 0.3s;
+    }
+
+    .show-item:hover {
+      padding-left: 1rem;
+    }
+
+    .show-item::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 0;
+      background: var(--red);
+      transition: height 0.3s;
+    }
+
+    .show-item:hover::after {
+      height: 70%;
+    }
+
+    .show-date {
+      text-align: center;
+    }
+
+    .show-day {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      line-height: 1;
+      color: var(--red);
+    }
+
+    .show-month {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .show-venue {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.05em;
+    }
+
+    .show-city {
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      margin-top: 0.2rem;
+    }
+
+    .show-support {
+      font-size: 0.65rem;
+      color: #555;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .show-btn {
+      border: 1px solid #333;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .show-btn:hover,
+    .show-btn.featured {
+      border-color: var(--red);
+      color: var(--white);
+      background: var(--red);
+    }
+
+    /* CONTACT */
+    #contacto {
+      padding: 6rem 2.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .contact-intro {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 2.5rem;
+    }
+
+    .contact-item {
+      padding: 1.2rem 0;
+      border-bottom: 1px solid #1a1a1a;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .contact-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #555;
+    }
+
+    .contact-val {
+      font-size: 0.8rem;
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .contact-val:hover {
+      color: var(--red);
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-field label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #555;
+    }
+
+    .form-field input,
+    .form-field textarea,
+    .form-field select {
+      background: #111;
+      border: 1px solid #252525;
+      color: var(--white);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78rem;
+      padding: 0.8rem 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .form-field input:focus,
+    .form-field textarea:focus,
+    .form-field select:focus {
+      border-color: var(--red);
+    }
+
+    .form-field select option {
+      background: #111;
+    }
+
+    .form-submit {
+      background: var(--red);
+      border: none;
+      color: var(--white);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 1rem 2rem;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      margin-top: 0.5rem;
+      align-self: flex-start;
+    }
+
+    .form-submit:hover {
+      opacity: 0.8;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid #1a1a1a;
+      padding: 2.5rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.1em;
+      color: var(--white);
+    }
+
+    .footer-logo span {
+      color: var(--red);
+    }
+
+    .footer-copy {
+      font-size: 0.6rem;
+      color: #444;
+      letter-spacing: 0.1em;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-social a {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #444;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-social a:hover {
+      color: var(--white);
+    }
+
+    /* MARQUEE */
+    .marquee-wrap {
+      overflow: hidden;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+      padding: 0.8rem 0;
+      background: #0d0d0d;
+    }
+
+    .marquee-inner {
+      display: flex;
+      gap: 3rem;
+      animation: marquee 18s linear infinite;
+      white-space: nowrap;
+    }
+
+    .marquee-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.15em;
+      color: #2a2a2a;
+      flex-shrink: 0;
+    }
+
+    .marquee-text span {
+      color: var(--red);
+    }
+
+    @keyframes marquee {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav ul {
+        display: none;
+      }
+
+      #hero {
+        padding: 0 1.5rem 3rem;
+      }
+
+      .hero-stamp {
+        display: none;
+      }
+
+      #bio {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+        padding: 4rem 1.5rem;
+      }
+
+      .bio-right {
+        display: none;
+      }
+
+      #musica,
+      #shows,
+      #contacto,
+      section {
+        padding: 4rem 1.5rem;
+      }
+
+      .show-item {
+        grid-template-columns: 4rem 1fr;
+        gap: 1rem;
+      }
+
+      .show-support,
+      .show-btn {
+        display: none;
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+
+      .track {
+        grid-template-columns: 2rem 1fr auto;
+      }
+
+      .track-type {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#hero">¿Dónde está <span>BOC</span>?</a>
+    <ul>
+      <li><a href="#bio">Sobre BOC</a></li>
+      <li><a href="#musica">Música</a></li>
+      <li><a href="#shows">Shows</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero" style="padding:0; max-width:none;">
+    <div class="hero-bg"></div>
+    <div class="hero-stamp">
+      <div class="hero-stamp-inner">Rock&nbsp;·&nbsp;Indie<br>——<br>2026<br>——<br>PACHUCA</div>
+    </div>
+    <div style="position:relative; z-index:2;">
+      <p class="hero-eyebrow">Proyecto musical · México</p>
+      <img src="./logo DEBOC.png" alt="logo_boc">
+      <div class="hero-sub">
+        <div class="hero-line"></div>
+        <p>Después de palabras no dichas y corazones rotos, la pregunta sigue siendo la misma...</p>
+      </div>
+    </div>
+    <div class="scroll-hint">Scroll</div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-inner">
+      <span class="marquee-text">¿DÓNDE ESTÁ <span>BOC</span>?</span>
+      <span class="marquee-text">VOY A<span>·</span> ENLOQUECER</span>
+      <span class="marquee-text">¿DÓNDE ESTÁ <span>BOC</span>?</span>
+      <span class="marquee-text">PACHUCA <span>·</span> MX</span>
+      <span class="marquee-text">¿DÓNDE ESTÁ <span>BOC</span>?</span>
+      <span class="marquee-text">ROCK <span>·</span> INDIE</span>
+      <span class="marquee-text">¿DÓNDE ESTÁ <span>BOC</span>?</span>
+      <span class="marquee-text">VOY A <span>·</span> ENLOQUECER </span>
+      <span class="marquee-text">¿DÓNDE ESTÁ <span>BOC</span>?</span>
+      <span class="marquee-text">POP<span>·</span> ROCK</span>
+      <span class="marquee-text">¿DÓNDE ESTÁ <span>BOC</span>?</span>
+      <span class="marquee-text">PUEBLA<span>·</span> MX</span>
+      <span class="marquee-text">¿DÓNDE ESTÁ <span>BOC</span>?</span>
+      <span class="marquee-text">SONIDO <span>·</span> CRUDO</span>
+      <span class="marquee-text">CDMX<span>·</span> MX</span>
+    </div>
+  </div>
+  <div class="embed-container">
+    <p>Escucha en tus plataformas</p>
+    <div class="embed-links">
+      <a class="embed-link"
+        href="https://open.spotify.com/intl-es/artist/3LQ4pmhDhArw0KeCPmTYzK?si=mvQdeQ4xR1GrY4Cn3eY0mw" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
+        </svg>
+        Spotify
+      </a>
+      <a class="embed-link" href="https://music.apple.com/es/artist/d%C3%B3nde-est%C3%A1-boc/1872153764"
+        target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701" />
+        </svg>
+        Apple Music
+      </a>
+      <a class="embed-link" href="https://www.youtube.com/@D%C3%B3ndeEst%C3%A1BOC" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z" />
+        </svg>
+        YouTube
+      </a>
+      <a class="embed-link" href="https://www.instagram.com/donde_esta_boc/" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
+        </svg>
+        Instagram
+      </a>
+    </div>
+  </div>
+  <!-- BIO -->
+  <div id="bio">
+    <div class="bio-left">
+      <p class="section-label">Sobre el proyecto</p>
+      <h2 class="section-title">BOC<br>existe.</h2>
+      <p class="bio-text">
+        Dónde está BOC? Es una banda de 5 estudiantes, cuyos miembros convergieron en Puebla
+      </p>
+      <p class="bio-text">
+        Fusionan Pop-Rock con influencias de Funk y Disco, creando un sonido fresco, bailable y emocional. Con letraas
+        nacidas del fondo del alma, grooves sólidos y una identidad visual cuidada, el proyecto destaca por su energía
+        en vivo y su conexión directa con el público.
+      </p>
+      <p class="bio-text">
+        Actualmente presentan su más reciente sencillo "Voy a enloquecer", disponible en todas las plataformas de
+        streaming. </p>
+      <div class="bio-tags">
+        <span class="bio-tag">Pop-Rock</span>
+        <span class="bio-tag">Funk</span>
+        <span class="bio-tag">Disco</span>
+        <span class="bio-tag">Grooves</span>
+        <span class="bio-tag">En vivo</span>
+      </div>
+    </div>
+    <div class="bio-right">
+      <img src="./image-removebg-preview.png" alt="boc">
+      <div class="bio-corner"></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+  <!-- INTEGRANTES -->
+  <div id="integrantes">
+    <p class="section-label">La banda</p>
+    <h2 class="section-title">Integrantes</h2>
+    <div class="members-grid">
+      <div class="member-card">
+        <div class="member-num">01</div>
+        <div class="member-name">Berna Franco</div>
+        <div class="member-role">Voz</div>
+      </div>
+      <div class="member-card">
+        <div class="member-num">02</div>
+        <div class="member-name">Osmar David</div>
+        <div class="member-role">Primera Guitarra</div>
+      </div>
+      <div class="member-card">
+        <div class="member-num">03</div>
+        <div class="member-name">Checo Rums</div>
+        <div class="member-role">Guitarra Rítmica</div>
+      </div>
+      <div class="member-card">
+        <div class="member-num">04</div>
+        <div class="member-name">Misael Martínez</div>
+        <div class="member-role">Bajo</div>
+      </div>
+      <div class="member-card">
+        <div class="member-num">05</div>
+        <div class="member-name">Mauro Sandoval</div>
+        <div class="member-role">Batería</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+  <!-- MÚSICA -->
+  <div id="musica">
+    <p class="section-label">Discografía</p>
+    <h2 class="section-title">Música</h2>
+    <div class="tracks">
+      <div class="track">
+        <span class="track-num">01</span>
+        <div class="track-info">
+          <div class="track-name">Voy a enloquecer</div>
+          <div class="track-detail">Sencillo · 2026</div>
+        </div>
+        <span class="track-type">Sencillo</span>
+        <span class="track-dur">3:42</span>
+      </div>
+      <div class="track">
+        <span class="track-num">02</span>
+        <div class="track-info">
+          <div class="track-name">Próximo sencillo</div>
+          <div class="track-detail">Marzo · 2026</div>
+        </div>
+        <span class="track-type">Sencillo</span>
+        <span class="track-dur">4:11</span>
+      </div>
+      <div class="track">
+        <span class="track-num">03</span>
+        <div class="track-info">
+          <div class="track-name">Próximo Sencillo</div>
+          <div class="track-detail">EP · 2026</div>
+        </div>
+        <span class="track-type">Sencillo</span>
+        <span class="track-dur">3:58</span>
+      </div>
+      <div class="track">
+        <span class="track-num">04</span>
+        <div class="track-info">
+          <div class="track-name">Tema en Vivo</div>
+          <div class="track-detail">EP · 2026</div>
+        </div>
+        <span class="track-type">EP</span>
+        <span class="track-dur">5:20</span>
+      </div>
+      <div class="track">
+        <span class="track-num">05</span>
+        <div class="track-info">
+          <div class="track-name">Album completo</div>
+          <div class="track-detail">Demo · 2026</div>
+        </div>
+        <span class="track-type">Demo</span>
+        <span class="track-dur">3:05</span>
+      </div>
+    </div>
+
+
+  </div>
+
+  <hr class="divider">
+
+  <!-- SHOWS -->
+  <div id="shows">
+    <p class="section-label">Agenda</p>
+    <h2 class="section-title">Shows</h2>
+    <div class="shows-grid">
+      <div class="show-item">
+        <div class="show-date">
+          <div class="show-day">15</div>
+          <div class="show-month">Mar 2025</div>
+        </div>
+        <div class="show-info">
+          <div class="show-venue">Nombre del Foro</div>
+          <div class="show-city">Ciudad de México · 21:00h</div>
+        </div>
+        <div class="show-support">Con: Banda Invitada</div>
+        <a class="show-btn featured" href="#">Boletos</a>
+      </div>
+      <div class="show-item">
+        <div class="show-date">
+          <div class="show-day">22</div>
+          <div class="show-month">Mar 2025</div>
+        </div>
+        <div class="show-info">
+          <div class="show-venue">El Otro Foro</div>
+          <div class="show-city">Guadalajara · 20:00h</div>
+        </div>
+        <div class="show-support">Presentación especial</div>
+        <a class="show-btn" href="#">Info</a>
+      </div>
+      <div class="show-item">
+        <div class="show-date">
+          <div class="show-day">05</div>
+          <div class="show-month">Abr 2025</div>
+        </div>
+        <div class="show-info">
+          <div class="show-venue">Foro Independiente</div>
+          <div class="show-city">Monterrey · 21:30h</div>
+        </div>
+        <div class="show-support">Fecha por confirmar</div>
+        <a class="show-btn" href="#">Pronto</a>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- CONTACTO -->
+  <div id="contacto">
+    <p class="section-label">Booking & prensa</p>
+    <h2 class="section-title">Contacto</h2>
+    <div class="contact-grid">
+      <div>
+        <p class="contact-intro">
+          ¿Quieres a BOC en tu foro, festival o evento? ¿Prensa, entrevistas, colaboraciones?<br><br>
+          Escríbenos. BOC aparece donde lo llaman.
+        </p>
+        <div class="contact-item">
+          <span class="contact-label">Email general</span>
+          <a class="contact-val" href="mailto:contacto@dondeestaboc.com">contacto@dondeestaboc.com</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">Booking</span>
+          <a class="contact-val" href="mailto:booking@dondeestaboc.com">booking@dondeestaboc.com</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">Instagram</span>
+          <a class="contact-val" href="https://www.instagram.com/donde_esta_boc/" target="_blank">@donde_esta_boc</a>
+        </div>
+      </div>
+      <div class="contact-form">
+        <div class="form-field">
+          <label>Nombre</label>
+          <input type="text" placeholder="Tu nombre">
+        </div>
+        <div class="form-field">
+          <label>Email</label>
+          <input type="email" placeholder="tu@email.com">
+        </div>
+        <div class="form-field">
+          <label>Motivo</label>
+          <select>
+            <option value="">Selecciona...</option>
+            <option>Booking / Shows</option>
+            <option>Prensa / Entrevistas</option>
+            <option>Colaboración</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Mensaje</label>
+          <textarea rows="4" placeholder="Cuéntanos..."></textarea>
+        </div>
+        <button class="form-submit"
+          onclick="this.textContent='Enviado ✓'; this.style.background='#1a6b3a'; setTimeout(()=>{this.textContent='Enviar mensaje';this.style.background=''},3000)">
+          Enviar mensaje
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">¿Dónde está <span>BOC</span>?</div>
+    <div class="footer-copy">© 2026 BOC · Todos los derechos reservados by The Fixers Mx</div>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/donde_esta_boc/" target="_blank">Instagram</a>
+      <a href="https://open.spotify.com" target="_blank">Spotify</a>
+      <a href="https://www.youtube.com" target="_blank">YouTube</a>
+    </div>
+  </footer>
+
+  <script>
+    const sections = document.querySelectorAll('[id]');
+    const navLinks = document.querySelectorAll('nav ul a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100;
+        if (scrollY >= sectionTop) current = section.getAttribute('id');
+      });
+      navLinks.forEach(link => {
+        link.style.color = link.getAttribute('href') === '#' + current ? '#f0ebe3' : '';
+      });
+    });
+    document.querySelectorAll('.track').forEach((track, i) => {
+      const num = track.querySelector('.track-num');
+      const orig = num.textContent;
+      track.addEventListener('mouseenter', () => { num.textContent = '▶'; });
+      track.addEventListener('mouseleave', () => { num.textContent = orig; });
+    });
+  </script>
+</body>
+
+</html>
