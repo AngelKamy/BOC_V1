@@ -3,1236 +3,393 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>¿Dónde está BOC?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0a0a">
+  <meta name="description" content="¿Dónde está BOC? Banda mexicana de indie rock, funk y música alternativa. Escucha Voy a enloquecer y Al Final; conoce a la banda y su próximo show.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="¿Dónde está BOC? | Música y conciertos">
+  <meta property="og:description" content="Indie rock, funk y música alternativa. Escucha Voy a enloquecer y Al Final.">
+  <title>¿Dónde está BOC? | Música y conciertos</title>
   <link rel="icon" href="./logo DEBOC.png">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
-    rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MusicGroup",
+      "name": "¿Dónde está BOC?",
+      "genre": ["Indie rock", "Funk", "Rock alternativo"],
+      "sameAs": [
+        "https://open.spotify.com/intl-es/artist/3LQ4pmhDhArw0KeCPmTYzK",
+        "https://music.apple.com/es/artist/d%C3%B3nde-est%C3%A1-boc/1872153764",
+        "https://www.youtube.com/@D%C3%B3ndeEst%C3%A1BOC",
+        "https://www.instagram.com/donde_esta_boc/"
+      ]
+    }
+  </script>
   <style>
     :root {
+      color-scheme: dark;
       --black: #0a0a0a;
+      --panel: #151515;
+      --panel-raised: #1d1d1d;
       --white: #f0ebe3;
-      --red: #c8233a;
-      --gray: #1e1e1e;
-      --mid: #3a3a3a;
-      --muted: #888;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background: var(--black);
-      color: var(--white);
-      font-family: 'Space Mono', monospace;
-      cursor: crosshair;
-      overflow-x: hidden;
-    }
-
-    /* GRAIN OVERLAY */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 9999;
-      opacity: 0.4;
-    }
-
-    /* NAV */
-    nav {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 100;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.2rem 2.5rem;
-      background: rgba(10, 10, 10, 0.92);
-      border-bottom: 1px solid #222;
-      backdrop-filter: blur(4px);
-    }
-
-    .nav-logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.4rem;
-      letter-spacing: 0.1em;
-      color: var(--white);
-      text-decoration: none;
-    }
-
-    .nav-logo span {
-      color: var(--red);
-    }
-
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 2.5rem;
-    }
-
-    nav ul a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
-
-    nav ul a:hover {
-      color: var(--white);
-    }
-
-        /* ── INTEGRANTES ── */
-    #integrantes { padding:6rem 2.5rem; max-width:1100px; margin:0 auto; }
-    .members-grid { display:grid; grid-template-columns:repeat(5,1fr); border:1px solid #1e1e1e; }
-    .member-card {
-      padding:2.5rem 1.5rem 2rem;
-      border-right:1px solid #1e1e1e;
-      position:relative;
-      overflow:hidden;
-      transition:background 0.3s;
-      cursor:default;
-    }
-    .member-card:last-child { border-right:none; }
-    .member-card::after {
-      content:'';
-      position:absolute; bottom:0; left:0; right:0;
-      height:3px;
-      background:var(--red);
-      transform:scaleX(0);
-      transform-origin:left;
-      transition:transform 0.3s ease;
-    }
-    .member-card:hover::after { transform:scaleX(1); }
-    .member-card:hover { background:#0f0f0f; }
-    .member-num { font-family:'Bebas Neue',sans-serif; font-size:2.5rem; color:#1e1e1e; line-height:1; margin-bottom:1.5rem; transition:color 0.3s; }
-    .member-card:hover .member-num { color:#2d2d2d; }
-    .member-name { font-family:'Bebas Neue',sans-serif; font-size:1.25rem; letter-spacing:0.04em; color:var(--white); line-height:1.1; margin-bottom:0.6rem; }
-    .member-role { font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--red); line-height:1.5; }
-
-    /* HERO */
-    #hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 0 2.5rem 4rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background:
-        repeating-linear-gradient(0deg,
-          transparent,
-          transparent 2px,
-          rgba(255, 255, 255, 0.012) 2px,
-          rgba(255, 255, 255, 0.012) 4px),
-        radial-gradient(ellipse at 20% 80%, rgba(200, 35, 58, 0.18) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 20%, rgba(200, 35, 58, 0.08) 0%, transparent 50%),
-        var(--black);
-    }
-
-    .hero-stamp {
-      position: absolute;
-      top: 12rem;
-      right: 3rem;
-      width: 180px;
-      height: 180px;
-      border: 3px solid var(--red);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      transform: rotate(15deg);
-      opacity: 0.7;
-      animation: spin-slow 20s linear infinite;
-    }
-
-    .hero-stamp-inner {
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--red);
-      line-height: 1.8;
-    }
-
-    @keyframes spin-slow {
-      from {
-        transform: rotate(15deg);
-      }
-
-      to {
-        transform: rotate(375deg);
-      }
-    }
-
-    .hero-eyebrow {
-      font-size: 0.7rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 1rem;
-      position: relative;
-      opacity: 0;
-      animation: fade-up 0.8s ease forwards 0.2s;
-    }
-
-    .hero-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(5rem, 14vw, 13rem);
-      line-height: 0.88;
-      letter-spacing: -0.01em;
-      position: relative;
-      opacity: 0;
-      animation: fade-up 0.8s ease forwards 0.4s;
-    }
-
-    .hero-title .line2 {
-      color: transparent;
-      -webkit-text-stroke: 1px var(--white);
-      display: block;
-    }
-
-    .hero-title .line3 {
-      color: var(--red);
-      display: block;
-    }
-
-    .hero-sub {
-      margin-top: 2rem;
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-      opacity: 0;
-      animation: fade-up 0.8s ease forwards 0.6s;
-    }
-
-    .hero-sub p {
-      font-size: 0.75rem;
-      color: var(--muted);
-      max-width: 320px;
-      line-height: 1.7;
-    }
-
-    .hero-line {
-      height: 1px;
-      width: 60px;
-      background: var(--red);
-      flex-shrink: 0;
-    }
-
-    .scroll-hint {
-      position: absolute;
-      bottom: 2rem;
-      right: 2.5rem;
-      writing-mode: vertical-rl;
-      font-size: 0.6rem;
-      letter-spacing: 0.25em;
-      color: var(--muted);
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      opacity: 0;
-      animation: fade-up 1s ease forwards 1.2s;
-    }
-
-    .scroll-hint::after {
-      content: '';
-      display: block;
-      width: 1px;
-      height: 50px;
-      background: var(--muted);
-      animation: shrink 2s ease-in-out infinite;
-    }
-
-    @keyframes shrink {
-
-      0%,
-      100% {
-        opacity: 1;
-      }
-
-      50% {
-        opacity: 0.2;
-      }
-    }
-
-    @keyframes fade-up {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* SECTION BASE */
-    section {
-      padding: 6rem 2.5rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .section-label {
-      font-size: 0.65rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 0.8rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .section-label::before {
-      content: '';
-      display: inline-block;
-      width: 30px;
-      height: 1px;
-      background: var(--red);
-    }
-
-    .section-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(3rem, 6vw, 5rem);
-      letter-spacing: 0.03em;
-      line-height: 1;
-      margin-bottom: 3rem;
-    }
-
-    /* DIVIDER */
-    .divider {
-      border: none;
-      border-top: 1px solid #1e1e1e;
-      margin: 0 2.5rem;
-    }
-
-    /* BIO */
-    #bio {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: start;
-      padding: 6rem 2.5rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .bio-left .section-title {
-      margin-bottom: 1rem;
-    }
-
-    .bio-text {
-      font-size: 0.85rem;
-      line-height: 1.9;
-      color: #bbb;
-      margin-bottom: 1.5rem;
-    }
-
-    .bio-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      margin-top: 2rem;
-    }
-
-    .bio-tag {
-      border: 1px solid #333;
-      padding: 0.35rem 0.9rem;
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .bio-right {
-      position: relative;
-    }
-
-    .bio-img-frame {
-      position: relative;
-      aspect-ratio: 3/4;
-      background: var(--gray);
-      overflow: hidden;
-    }
-
-    .bio-img-frame::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        repeating-linear-gradient(45deg,
-          transparent,
-          transparent 3px,
-          rgba(200, 35, 58, 0.05) 3px,
-          rgba(200, 35, 58, 0.05) 4px);
-      z-index: 1;
-    }
-
-    .bio-img-placeholder {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      color: #333;
-    }
-
-    .bio-img-placeholder svg {
-      opacity: 0.3;
-    }
-
-    .bio-img-placeholder p {
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: #444;
-    }
-
-    .bio-corner {
-      position: absolute;
-      bottom: -15px;
-      right: -15px;
-      width: 60%;
-      height: 60%;
-      border: 1px solid var(--red);
-      z-index: -1;
-      opacity: 0.4;
-    }
-
-    /* MUSIC */
-    #musica {
-      padding: 6rem 2.5rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .tracks {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    .track {
-      display: grid;
-      grid-template-columns: 2.5rem 1fr auto auto;
-      align-items: center;
-      gap: 1.5rem;
-      padding: 1.2rem 0;
-      border-bottom: 1px solid #1a1a1a;
-      cursor: pointer;
-      transition: background 0.2s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .track::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 0;
-      background: rgba(200, 35, 58, 0.06);
-      transition: width 0.3s ease;
-    }
-
-    .track:hover::before {
-      width: 100%;
-    }
-
-    .track-num {
-      font-size: 0.7rem;
-      color: var(--muted);
-      text-align: center;
-    }
-
-    .track:hover .track-num {
-      color: var(--red);
-    }
-
-    .track-name {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.3rem;
-      letter-spacing: 0.05em;
-    }
-
-    .track-detail {
-      font-size: 0.65rem;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-      margin-top: 0.2rem;
-    }
-
-    .track-type {
-      font-size: 0.6rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: #444;
-      border: 1px solid #2a2a2a;
-      padding: 0.2rem 0.6rem;
-    }
-
-    .track-dur {
-      font-size: 0.7rem;
-      color: var(--muted);
-      font-variant-numeric: tabular-nums;
-    }
-
-    .embed-container {
-      margin-top: 3rem;
-      background: #111;
-      border: 1px solid #222;
-      padding: 2rem;
-      text-align: center;
-    }
-
-    .embed-container p {
-      font-size: 0.7rem;
-      color: var(--muted);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-    }
-
-    .embed-links {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .embed-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      border: 1px solid #333;
-      padding: 0.6rem 1.2rem;
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--white);
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-
-    .embed-link:hover {
-      border-color: var(--red);
-      color: var(--red);
-    }
-
-    /* SHOWS */
-    #shows {
-      padding: 6rem 2.5rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .shows-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    .show-item {
-      display: grid;
-      grid-template-columns: 5rem 1fr 1fr auto;
-      align-items: center;
-      gap: 2rem;
-      padding: 1.8rem 0;
-      border-bottom: 1px solid #1a1a1a;
-      position: relative;
-      overflow: hidden;
-      transition: padding-left 0.3s;
-    }
-
-    .show-item:hover {
-      padding-left: 1rem;
-    }
-
-    .show-item::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 3px;
-      height: 0;
-      background: var(--red);
-      transition: height 0.3s;
-    }
-
-    .show-item:hover::after {
-      height: 70%;
-    }
-
-    .show-date {
-      text-align: center;
-    }
-
-    .show-day {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 2.5rem;
-      line-height: 1;
-      color: var(--red);
-    }
-
-    .show-month {
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .show-venue {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.5rem;
-      letter-spacing: 0.05em;
-    }
-
-    .show-city {
-      font-size: 0.7rem;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-      margin-top: 0.2rem;
-    }
-
-    .show-support {
-      font-size: 0.65rem;
-      color: #555;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    .show-btn {
-      border: 1px solid #333;
-      padding: 0.6rem 1.2rem;
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      transition: all 0.2s;
-      white-space: nowrap;
-    }
-
-    .show-btn:hover,
-    .show-btn.featured {
-      border-color: var(--red);
-      color: var(--white);
-      background: var(--red);
-    }
-
-    /* CONTACT */
-    #contacto {
-      padding: 6rem 2.5rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: start;
-    }
-
-    .contact-intro {
-      font-size: 0.8rem;
-      color: var(--muted);
-      line-height: 1.9;
-      margin-bottom: 2.5rem;
-    }
-
-    .contact-item {
-      padding: 1.2rem 0;
-      border-bottom: 1px solid #1a1a1a;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .contact-label {
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: #555;
-    }
-
-    .contact-val {
-      font-size: 0.8rem;
-      color: var(--white);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .contact-val:hover {
-      color: var(--red);
-    }
-
-    .contact-form {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .form-field {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-
-    .form-field label {
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: #555;
-    }
-
-    .form-field input,
-    .form-field textarea,
-    .form-field select {
-      background: #111;
-      border: 1px solid #252525;
-      color: var(--white);
-      font-family: 'Space Mono', monospace;
-      font-size: 0.78rem;
-      padding: 0.8rem 1rem;
-      outline: none;
-      transition: border-color 0.2s;
-      resize: none;
-      appearance: none;
-      -webkit-appearance: none;
-    }
-
-    .form-field input:focus,
-    .form-field textarea:focus,
-    .form-field select:focus {
-      border-color: var(--red);
-    }
-
-    .form-field select option {
-      background: #111;
-    }
-
-    .form-submit {
-      background: var(--red);
-      border: none;
-      color: var(--white);
-      font-family: 'Space Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      padding: 1rem 2rem;
-      cursor: pointer;
-      transition: opacity 0.2s;
-      margin-top: 0.5rem;
-      align-self: flex-start;
-    }
-
-    .form-submit:hover {
-      opacity: 0.8;
-    }
-
-    /* FOOTER */
-    footer {
-      border-top: 1px solid #1a1a1a;
-      padding: 2.5rem 2.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    .footer-logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.2rem;
-      letter-spacing: 0.1em;
-      color: var(--white);
-    }
-
-    .footer-logo span {
-      color: var(--red);
-    }
-
-    .footer-copy {
-      font-size: 0.6rem;
-      color: #444;
-      letter-spacing: 0.1em;
-    }
-
-    .footer-social {
-      display: flex;
-      gap: 1.5rem;
-    }
-
-    .footer-social a {
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: #444;
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .footer-social a:hover {
-      color: var(--white);
-    }
-
-    /* MARQUEE */
-    .marquee-wrap {
-      overflow: hidden;
-      border-top: 1px solid #1a1a1a;
-      border-bottom: 1px solid #1a1a1a;
-      padding: 0.8rem 0;
-      background: #0d0d0d;
-    }
-
-    .marquee-inner {
-      display: flex;
-      gap: 3rem;
-      animation: marquee 18s linear infinite;
-      white-space: nowrap;
-    }
-
-    .marquee-text {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1rem;
-      letter-spacing: 0.15em;
-      color: #2a2a2a;
-      flex-shrink: 0;
-    }
-
-    .marquee-text span {
-      color: var(--red);
-    }
-
-    @keyframes marquee {
-      from {
-        transform: translateX(0);
-      }
-
-      to {
-        transform: translateX(-50%);
-      }
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-      nav ul {
-        display: none;
-      }
-
-      #hero {
-        padding: 0 1.5rem 3rem;
-      }
-
-      .hero-stamp {
-        display: none;
-      }
-
-      #bio {
-        grid-template-columns: 1fr;
-        gap: 2.5rem;
-        padding: 4rem 1.5rem;
-      }
-
-      .bio-right {
-        display: none;
-      }
-
-      #musica,
-      #shows,
-      #contacto,
-      section {
-        padding: 4rem 1.5rem;
-      }
-
-      .show-item {
-        grid-template-columns: 4rem 1fr;
-        gap: 1rem;
-      }
-
-      .show-support,
-      .show-btn {
-        display: none;
-      }
-
-      .contact-grid {
-        grid-template-columns: 1fr;
-        gap: 3rem;
-      }
-
-      .track {
-        grid-template-columns: 2rem 1fr auto;
-      }
-
-      .track-type {
-        display: none;
-      }
+      --muted: #b8b1a8;
+      --accent: #ff6175;
+      --accent-fill: #a71930;
+      --line: #45403e;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 7.5rem; }
+    body { margin: 0; background: var(--black); color: var(--white); font: 400 1rem/1.65 'DM Sans', sans-serif; }
+    img { display: block; max-width: 100%; height: auto; }
+    a { color: inherit; }
+    a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+    ::selection { background: var(--accent-fill); color: var(--white); }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    .skip-link { position: absolute; z-index: 30; top: -5rem; left: 1rem; padding: .65rem 1rem; background: var(--white); color: var(--black); font-weight: 700; }
+    .skip-link:focus { top: .75rem; }
+    .container { width: min(100% - 2rem, 1120px); margin-inline: auto; }
+    section[id] { scroll-margin-top: 7.5rem; }
+
+    /* Navegación visible en todos los tamaños de pantalla. */
+    .site-header { position: sticky; top: 0; z-index: 20; background: rgba(10, 10, 10, .96); border-bottom: 1px solid var(--line); backdrop-filter: blur(12px); }
+    .nav-inner { display: grid; gap: .4rem; padding-block: .55rem .7rem; }
+    .brand { width: fit-content; min-height: 2.5rem; display: inline-flex; align-items: center; font: 1.45rem/1 'Bebas Neue', sans-serif; letter-spacing: .035em; text-decoration: none; }
+    .brand span { color: var(--accent); margin-left: .22em; }
+    nav ul { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .25rem; margin: 0; padding: 0; list-style: none; }
+    nav a { min-height: 2.75rem; display: grid; place-items: center; padding: .3rem .15rem; border: 1px solid transparent; color: var(--muted); font: 700 .82rem/1.25 'Space Mono', monospace; text-align: center; text-decoration: none; text-transform: uppercase; letter-spacing: .02em; }
+    nav a:hover, nav a:focus-visible { color: var(--white); border-color: var(--line); }
+
+    /* Primera pantalla: nombre, propuesta de valor y escucha. */
+    .hero { position: relative; overflow: hidden; padding: clamp(2.75rem, 6vw, 6rem) 0; background: radial-gradient(circle at 10% 30%, rgba(167, 25, 48, .29), transparent 43%), repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,.018) 3px, rgba(255,255,255,.018) 4px), var(--black); }
+    .hero-grid { display: grid; gap: 2.5rem; align-items: center; }
+    .eyebrow, .section-kicker, .tag, .member-role, .show-status { color: var(--accent); font: 700 .78rem/1.5 'Space Mono', monospace; text-transform: uppercase; letter-spacing: .08em; }
+    .eyebrow { margin: 0 0 1.5rem; }
+    h1 { margin: 0; width: min(100%, 440px); }
+    h1 img { width: 100%; }
+    .hero-copy { max-width: 35rem; margin: 1.5rem 0 0; color: var(--white); font-size: clamp(1.12rem, 3vw, 1.5rem); line-height: 1.45; }
+    .hero-detail { max-width: 32rem; margin: .75rem 0 0; color: var(--muted); }
+    .actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.8rem; }
+    .button { min-height: 3rem; display: inline-flex; align-items: center; justify-content: center; padding: .72rem 1.15rem; border: 1px solid var(--accent-fill); background: var(--accent-fill); color: var(--white); font: 700 .85rem/1.3 'Space Mono', monospace; text-decoration: none; text-align: center; transition: background .2s ease, border-color .2s ease, transform .2s ease; }
+    .button:hover { background: #c82e47; border-color: #c82e47; transform: translateY(-2px); }
+    .button.secondary { background: transparent; border-color: var(--muted); }
+    .button.secondary:hover { background: var(--panel-raised); border-color: var(--white); }
+    .hero-art { position: relative; width: min(100%, 420px); justify-self: center; padding-top: 1.25rem; }
+    .hero-photo { width: 100%; margin: 0; padding: .65rem; border: 1px solid var(--line); background: #111; box-shadow: 16px 16px 0 rgba(167,25,48,.24); transform: rotate(2deg); }
+    .hero-photo img { width: 100%; }
+    .hero-photo figcaption { padding: .8rem .25rem .2rem; color: var(--muted); font: .72rem/1.4 'Space Mono', monospace; text-align: center; }
+    .vinyl img {border-radius: 50%;}
+    .vinyl { position: absolute; z-index: 1; top: -.65rem; right: -.35rem; display: grid; place-items: center; width: clamp(6.5rem, 29vw, 10rem); aspect-ratio: 1; border: 3px solid #383433; border-radius: 50%; background: repeating-radial-gradient(circle, #171717 0 2px, #090909 3px 5px, #2b2929 6px 7px); box-shadow: 0 0 0 3px #090909, 0 12px 24px rgba(0, 0, 0, .55); animation: vinyl-spin 18s linear infinite; }
+    .vinyl::before { content: ''; position: absolute; inset: 27%; border: 2px solid var(--white); border-radius: 50%; background: var(--accent-fill); }
+    .vinyl-label { position: relative; max-width: 44%; color: var(--white); font: 1.4rem/1 'Bebas Neue', sans-serif; letter-spacing: .07em; text-align: center; }
+    @keyframes vinyl-spin { to { transform: rotate(360deg); } }
+    .marquee-wrap { display: flex; border-block: 1px solid var(--line); background: #111; }
+    .marquee-viewport { min-width: 0; flex: 1; overflow: hidden; }
+    .marquee-track { display: flex; width: max-content; animation: marquee-scroll 24s linear infinite; }
+    body[data-motion="paused"] .marquee-track,
+    body[data-motion="paused"] .vinyl { animation-play-state: paused; }
+    .marquee-group { display: flex; flex: none; align-items: center; gap: 2.5rem; padding: .8rem 1.25rem; }
+    .marquee-group span { flex: none; color: var(--muted); font: 1.05rem/1 'Bebas Neue', sans-serif; letter-spacing: .12em; white-space: nowrap; }
+    .marquee-group .accent { color: var(--accent); }
+    .marquee-control { flex: none; min-height: 3rem; padding: .55rem .8rem; border: 0; border-left: 1px solid var(--line); background: var(--panel); color: var(--white); font: 700 .74rem/1.2 'Space Mono', monospace; cursor: pointer; }
+    .marquee-control:hover { background: var(--panel-raised); }
+    @keyframes marquee-scroll { to { transform: translateX(-50%); } }
+
+    /* Contenido y ritmo visual. */
+    .content-section { padding-block: clamp(4rem, 8vw, 7rem); border-bottom: 1px solid #282525; }
+    .section-kicker { margin: 0 0 .6rem; }
+    h2 { margin: 0 0 1.4rem; font: clamp(3.15rem, 9vw, 5.75rem)/.98 'Bebas Neue', sans-serif; letter-spacing: .02em; }
+    h3 { margin: 0; }
+    .lead { max-width: 45rem; margin: 0 0 1rem; font-size: clamp(1.07rem, 2vw, 1.35rem); line-height: 1.55; }
+    .body-copy { max-width: 46rem; margin: 0 0 1.25rem; color: var(--muted); }
+    .tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.8rem; }
+    .tag { padding: .35rem .65rem; border: 1px solid var(--line); color: var(--muted); font-size: .69rem; }
+    .members-grid { display: grid; grid-template-columns: 1fr; gap: 1px; margin: 2rem 0 0; padding: 0; border: 1px solid var(--line); background: var(--line); list-style: none; }
+    .member-card { position: relative; min-width: 0; overflow: hidden; background: var(--black); }
+    .member-card::after { content: ''; position: absolute; z-index: 2; inset: auto 0 0; height: 3px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .3s ease; pointer-events: none; }
+    .member-card:hover::after, .member-card.is-active::after { transform: scaleX(1); }
+    .member-trigger { display: grid; grid-template-columns: minmax(0, 42%) minmax(0, 1fr); align-items: stretch; width: 100%; min-height: 11rem; padding: 0; border: 0; background: var(--panel); color: var(--white); text-align: left; cursor: pointer; }
+    .member-trigger:focus-visible { outline-offset: -4px; }
+    .member-media { display: block; min-width: 0; overflow: hidden; }
+    .member-media img { width: 100%; height: 100%; object-fit: cover; object-position: center; filter: var(--photo-light, brightness(1)); transition: filter .35s ease, transform .35s ease; }
+    .member-card.is-active .member-media img { filter: saturate(1.15) var(--photo-light, brightness(1)); transform: scale(1.08); }
+    .member-card--berna .member-media img { object-position: 56% center; }
+    .member-card--checo .member-media img { object-position: 43% center; }
+    .member-card--osmar { --photo-light: brightness(1.3) contrast(1.1); }
+    .member-content { display: flex; flex-direction: column; justify-content: center; min-width: 0; padding: 1rem; }
+    .members-title { margin: 3rem 0 1rem; color: var(--white); font: 2rem/1 'Bebas Neue', sans-serif; letter-spacing: .02em; }
+    .member-num { color: #aaa19c; font: 2.65rem/1 'Bebas Neue', sans-serif; }
+    .member-name { margin: .8rem 0 .35rem; font: clamp(1.45rem, 4vw, 1.85rem)/1 'Bebas Neue', sans-serif; letter-spacing: .025em; }
+    .member-role { margin: 0; color: var(--accent); }
+    .member-card.is-active .member-trigger { background: #211419; }
+
+    /* Música: solo se muestran lanzamientos confirmados. */
+    .song-list { display: grid; gap: 0; margin: 2rem 0 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+    .song-list li { display: grid; grid-template-columns: 2rem 1fr; gap: 1rem; align-items: baseline; padding: 1.15rem .2rem; border-bottom: 1px solid var(--line); }
+    .song-list .number { color: var(--accent); font: 700 .75rem 'Space Mono', monospace; }
+    .song-list strong { font: 1.6rem/1 'Bebas Neue', sans-serif; }
+    .platform-links { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.8rem; }
+    .platform-links a { min-height: 2.75rem; display: inline-flex; align-items: center; padding: .55rem .85rem; border: 1px solid var(--line); color: var(--white); font: 700 .85rem/1.3 'Space Mono', monospace; text-decoration: none; }
+    .platform-links a:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Próxima presentación sin fecha ni boletos inventados. */
+    .show-card { display: grid; gap: 1rem; align-items: center; margin-top: 2rem; padding: clamp(1.25rem, 4vw, 2rem); border: 1px solid var(--line); background: var(--panel); }
+    .show-card h3 { font: 2.25rem/1 'Bebas Neue', sans-serif; }
+    .show-card p { margin: .4rem 0 0; color: var(--muted); }
+    .show-card .show-status { margin: 0; color: var(--accent); }
+
+    /* Contacto real: los correos aún no funcionan. */
+    .contact-layout { display: grid; gap: 1.5rem; align-items: start; }
+    .contact-layout p { max-width: 38rem; margin: 0; color: var(--muted); }
+    .contact-card { display: grid; gap: .85rem; padding: 1.5rem; border: 1px solid var(--line); background: var(--panel); }
+    .contact-card strong { font: 1.8rem/1 'Bebas Neue', sans-serif; }
+    .contact-card p { font-size: .95rem; }
+    .contact-card .button { justify-self: start; }
+
+    footer { padding-block: 2rem 3rem; }
+    .footer-inner { display: grid; gap: 1rem; }
+    .footer-brand { font: 1.6rem/1 'Bebas Neue', sans-serif; }
+    .footer-brand span { color: var(--accent); }
+    .footer-links { display: flex; flex-wrap: wrap; gap: .3rem 1.1rem; }
+    .footer-links a { min-height: 2.75rem; display: inline-flex; align-items: center; color: var(--muted); font: 700 .83rem 'Space Mono', monospace; text-underline-offset: .25em; }
+    .footer-links a:hover { color: var(--white); }
+    .footer-bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+    .footer-copy { margin: 0; color: var(--muted); font-size: .83rem; }
+    .footer-credit { display: inline-flex; align-items: center; gap: .7rem; width: fit-content; padding: .55rem .8rem; border: 2px solid var(--accent); color: var(--white); transform: rotate(-2deg); }
+    .footer-credit-mark { display: grid; flex: none; place-items: center; width: 2.25rem; height: 2.25rem; border: 1px solid var(--accent); border-radius: 50%; color: var(--accent); font: 1.2rem/1 'Bebas Neue', sans-serif; }
+    .footer-credit-text { display: grid; gap: .1rem; color: var(--muted); font: 700 .65rem/1.2 'Space Mono', monospace; letter-spacing: .06em; text-transform: uppercase; }
+    .footer-credit-text strong { color: var(--white); font: 1.15rem/1 'Bebas Neue', sans-serif; letter-spacing: .08em; }
+
+    @media (min-width: 600px) {
+      .members-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .member-trigger { position: relative; display: block; height: 22rem; }
+      .member-media { position: absolute; inset: 0; }
+      .member-media img { filter: grayscale(.28) var(--photo-light, brightness(1)); }
+      .member-content { position: absolute; inset: auto 0 0; min-height: 9rem; justify-content: flex-end; background: linear-gradient(transparent, rgba(0, 0, 0, .94)); }
+      .member-card:hover .member-media img, .member-card.is-active .member-media img { filter: var(--photo-light, brightness(1)); transform: scale(1.04); }
+      .member-num { color: #d5c9c4; }
+      .show-card { grid-template-columns: 1fr auto; }
+      .contact-layout { grid-template-columns: 1fr 1fr; }
+    }
+    @media (min-width: 760px) {
+      html { scroll-padding-top: 5rem; }
+      section[id] { scroll-margin-top: 5rem; }
+      .nav-inner { display: flex; justify-content: space-between; align-items: center; padding-block: .55rem; }
+      nav ul { display: flex; gap: .35rem; }
+      nav a { padding-inline: .75rem; }
+      .hero-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); }
+      .hero-photo { transform: rotate(3deg); }
+      .footer-inner { grid-template-columns: 1fr auto; align-items: center; }
+      .footer-bottom { grid-column: 1 / -1; }
+    }
+    @media (min-width: 1000px) {
+      .members-grid { display: flex; height: 27rem; }
+      .member-card { flex: 1; transition: flex .4s ease; }
+      .member-card:hover { flex: 1.3; }
+      .member-card.is-active { flex: 1.6; }
+      .member-trigger { height: 100%; }
+      .member-content { padding: 1.5rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+      body:not([data-motion="running"]) .vinyl,
+      body:not([data-motion="running"]) .marquee-track { animation-play-state: paused; }
     }
   </style>
 </head>
 
-<body>
+<body data-motion="paused">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header">
+    <div class="container nav-inner">
+      <a class="brand" href="#inicio" aria-label="¿Dónde está BOC? Ir al inicio">¿Dónde está <span>BOC?</span></a>
+      <nav aria-label="Navegación principal">
+        <ul>
+          <li><a href="#bio">La banda</a></li>
+          <li><a href="#musica">Música</a></li>
+          <li><a href="#shows">Shows</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-  <!-- NAV -->
-  <nav>
-    <a class="nav-logo" href="#hero">¿Dónde está <span>BOC</span>?</a>
-    <ul>
-      <li><a href="#bio">Sobre BOC</a></li>
-      <li><a href="#musica">Música</a></li>
-      <li><a href="#shows">Shows</a></li>
-      <li><a href="#contacto">Contacto</a></li>
-    </ul>
-  </nav>
+  <main id="contenido" tabindex="-1">
+    <section class="hero" id="inicio" aria-labelledby="titulo-banda">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">Indie · Rock · Funk · Alternativo</p>
+          <h1 id="titulo-banda"><span class="sr-only">¿Dónde está BOC?</span><img src="./logo DEBOC.png" alt="" width="440" height="288" fetchpriority="high"></h1>
+          <p class="hero-copy">Una banda mexicana que mezcla guitarras, groove y canciones para sentir en vivo.</p>
+          <p class="hero-detail">Ya puedes escuchar «Voy a enloquecer» y «Al Final».</p>
+          <div class="actions">
+            <a class="button" href="https://open.spotify.com/intl-es/artist/3LQ4pmhDhArw0KeCPmTYzK">Escuchar en Spotify</a>
+            <a class="button secondary" href="#musica">Explorar la música</a>
+          </div>
+        </div>
+        <div class="hero-art">
+          <figure class="hero-photo">
+            <img src="./image-removebg-preview.png" alt="Fotografía promocional de cuatro músicos de ¿Dónde está BOC? en un marco tipo Polaroid" width="464" height="538">
+            <figcaption>© 2025 Dónde Está BOC?. Todos los derechos reservados.</figcaption>
+          </figure>
+          <div class="vinyl" aria-hidden="true"><span class="vinyl-label"><img src="./assets/Portada voy a eloquecer.jpg" alt=""></span></div>
+        </div>
+      </div>
+    </section>
 
-  <!-- HERO -->
-  <section id="hero" style="padding:0; max-width:none;">
-    <div class="hero-bg"></div>
-    <div class="hero-stamp">
-      <div class="hero-stamp-inner">Rock&nbsp;·&nbsp;Indie<br>——<br>2026<br>——<br>PACHUCA</div>
-    </div>
-    <div style="position:relative; z-index:2;">
-      <p class="hero-eyebrow">Proyecto musical · México</p>
-      <img src="./logo DEBOC.png" alt="logo_boc">
-      <div class="hero-sub">
-        <div class="hero-line"></div>
-        <p>Después de palabras no dichas y corazones rotos, la pregunta sigue siendo la misma...</p>
-      </div>
-    </div>
-    <div class="scroll-hint">Scroll</div>
-  </section>
-
-  <!-- MARQUEE -->
-  <div class="marquee-wrap">
-    <div class="marquee-inner">
-      <span class="marquee-text">¿DÓNDE ESTÁ <span>BOC</span>?</span>
-      <span class="marquee-text">VOY A<span>·</span> ENLOQUECER</span>
-      <span class="marquee-text">¿DÓNDE ESTÁ <span>BOC</span>?</span>
-      <span class="marquee-text">PACHUCA <span>·</span> MX</span>
-      <span class="marquee-text">¿DÓNDE ESTÁ <span>BOC</span>?</span>
-      <span class="marquee-text">ROCK <span>·</span> INDIE</span>
-      <span class="marquee-text">¿DÓNDE ESTÁ <span>BOC</span>?</span>
-      <span class="marquee-text">VOY A <span>·</span> ENLOQUECER </span>
-      <span class="marquee-text">¿DÓNDE ESTÁ <span>BOC</span>?</span>
-      <span class="marquee-text">POP<span>·</span> ROCK</span>
-      <span class="marquee-text">¿DÓNDE ESTÁ <span>BOC</span>?</span>
-      <span class="marquee-text">PUEBLA<span>·</span> MX</span>
-      <span class="marquee-text">¿DÓNDE ESTÁ <span>BOC</span>?</span>
-      <span class="marquee-text">SONIDO <span>·</span> CRUDO</span>
-      <span class="marquee-text">CDMX<span>·</span> MX</span>
-    </div>
-  </div>
-  <div class="embed-container">
-    <p>Escucha en tus plataformas</p>
-    <div class="embed-links">
-      <a class="embed-link"
-        href="https://open.spotify.com/intl-es/artist/3LQ4pmhDhArw0KeCPmTYzK?si=mvQdeQ4xR1GrY4Cn3eY0mw" target="_blank">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-          <path
-            d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
-        </svg>
-        Spotify
-      </a>
-      <a class="embed-link" href="https://music.apple.com/es/artist/d%C3%B3nde-est%C3%A1-boc/1872153764"
-        target="_blank">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-          <path
-            d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701" />
-        </svg>
-        Apple Music
-      </a>
-      <a class="embed-link" href="https://www.youtube.com/@D%C3%B3ndeEst%C3%A1BOC" target="_blank">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-          <path
-            d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z" />
-        </svg>
-        YouTube
-      </a>
-      <a class="embed-link" href="https://www.instagram.com/donde_esta_boc/" target="_blank">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-          <path
-            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
-        </svg>
-        Instagram
-      </a>
-    </div>
-  </div>
-  <!-- BIO -->
-  <div id="bio">
-    <div class="bio-left">
-      <p class="section-label">Sobre el proyecto</p>
-      <h2 class="section-title">BOC<br>existe.</h2>
-      <p class="bio-text">
-        Dónde está BOC? Es una banda de 5 estudiantes, cuyos miembros convergieron en Puebla
-      </p>
-      <p class="bio-text">
-        Fusionan Pop-Rock con influencias de Funk y Disco, creando un sonido fresco, bailable y emocional. Con letraas
-        nacidas del fondo del alma, grooves sólidos y una identidad visual cuidada, el proyecto destaca por su energía
-        en vivo y su conexión directa con el público.
-      </p>
-      <p class="bio-text">
-        Actualmente presentan su más reciente sencillo "Voy a enloquecer", disponible en todas las plataformas de
-        streaming. </p>
-      <div class="bio-tags">
-        <span class="bio-tag">Pop-Rock</span>
-        <span class="bio-tag">Funk</span>
-        <span class="bio-tag">Disco</span>
-        <span class="bio-tag">Grooves</span>
-        <span class="bio-tag">En vivo</span>
-      </div>
-    </div>
-    <div class="bio-right">
-      <img src="./image-removebg-preview.png" alt="boc">
-      <div class="bio-corner"></div>
-    </div>
-  </div>
-
-  <hr class="divider">
-  <!-- INTEGRANTES -->
-  <div id="integrantes">
-    <p class="section-label">La banda</p>
-    <h2 class="section-title">Integrantes</h2>
-    <div class="members-grid">
-      <div class="member-card">
-        <div class="member-num">01</div>
-        <div class="member-name">Berna Franco</div>
-        <div class="member-role">Voz</div>
-      </div>
-      <div class="member-card">
-        <div class="member-num">02</div>
-        <div class="member-name">Osmar David</div>
-        <div class="member-role">Primera Guitarra</div>
-      </div>
-      <div class="member-card">
-        <div class="member-num">03</div>
-        <div class="member-name">Checo Rums</div>
-        <div class="member-role">Guitarra Rítmica</div>
-      </div>
-      <div class="member-card">
-        <div class="member-num">04</div>
-        <div class="member-name">Misael Martínez</div>
-        <div class="member-role">Bajo</div>
-      </div>
-      <div class="member-card">
-        <div class="member-num">05</div>
-        <div class="member-name">Mauro Sandoval</div>
-        <div class="member-role">Batería</div>
-      </div>
-    </div>
-  </div>
-
-  <hr class="divider">
-  <!-- MÚSICA -->
-  <div id="musica">
-    <p class="section-label">Discografía</p>
-    <h2 class="section-title">Música</h2>
-    <div class="tracks">
-      <div class="track">
-        <span class="track-num">01</span>
-        <div class="track-info">
-          <div class="track-name">Voy a enloquecer</div>
-          <div class="track-detail">Sencillo · 2026</div>
+    <div class="marquee-wrap" id="marquee">
+      <div class="marquee-viewport" aria-hidden="true">
+        <div class="marquee-track">
+          <div class="marquee-group">
+            <span class="accent">¿Dónde está BOC?</span><span>Voy a enloquecer</span><span>Indie · Rock · Funk</span><span class="accent">Al Final</span><span>Sonido crudo · En vivo</span>
+          </div>
+          <div class="marquee-group">
+            <span class="accent">¿Dónde está BOC?</span><span>Voy a enloquecer</span><span>Indie · Rock · Funk</span><span class="accent">Al Final</span><span>Sonido crudo · En vivo</span>
+          </div>
         </div>
-        <span class="track-type">Sencillo</span>
-        <span class="track-dur">3:42</span>
       </div>
-      <div class="track">
-        <span class="track-num">02</span>
-        <div class="track-info">
-          <div class="track-name">Próximo sencillo</div>
-          <div class="track-detail">Marzo · 2026</div>
-        </div>
-        <span class="track-type">Sencillo</span>
-        <span class="track-dur">4:11</span>
-      </div>
-      <div class="track">
-        <span class="track-num">03</span>
-        <div class="track-info">
-          <div class="track-name">Próximo Sencillo</div>
-          <div class="track-detail">EP · 2026</div>
-        </div>
-        <span class="track-type">Sencillo</span>
-        <span class="track-dur">3:58</span>
-      </div>
-      <div class="track">
-        <span class="track-num">04</span>
-        <div class="track-info">
-          <div class="track-name">Tema en Vivo</div>
-          <div class="track-detail">EP · 2026</div>
-        </div>
-        <span class="track-type">EP</span>
-        <span class="track-dur">5:20</span>
-      </div>
-      <div class="track">
-        <span class="track-num">05</span>
-        <div class="track-info">
-          <div class="track-name">Album completo</div>
-          <div class="track-detail">Demo · 2026</div>
-        </div>
-        <span class="track-type">Demo</span>
-        <span class="track-dur">3:05</span>
-      </div>
+      <button class="marquee-control" type="button" aria-label="Reanudar animaciones">Reanudar</button>
     </div>
 
+    <section class="content-section" id="bio" aria-labelledby="bio-title">
+      <div class="container">
+        <p class="section-kicker">Sobre el proyecto</p>
+        <h2 id="bio-title">BOC existe.</h2>
+        <p class="lead">Cuatro integrantes, canciones emocionales y un sonido que cruza el pop rock, el funk y el disco.</p>
+        <p class="body-copy">¿Dónde está BOC? nació del encuentro de cuatro músicos en Puebla. Sus grooves y guitarras llevan esas canciones al escenario con una energía directa y bailable.</p>
+        <div class="tags"><span class="tag">Indie rock</span><span class="tag">Funk</span><span class="tag">Pop rock</span><span class="tag">Disco</span></div>
 
-  </div>
-
-  <hr class="divider">
-
-  <!-- SHOWS -->
-  <div id="shows">
-    <p class="section-label">Agenda</p>
-    <h2 class="section-title">Shows</h2>
-    <div class="shows-grid">
-      <div class="show-item">
-        <div class="show-date">
-          <div class="show-day">15</div>
-          <div class="show-month">Mar 2025</div>
-        </div>
-        <div class="show-info">
-          <div class="show-venue">Nombre del Foro</div>
-          <div class="show-city">Ciudad de México · 21:00h</div>
-        </div>
-        <div class="show-support">Con: Banda Invitada</div>
-        <a class="show-btn featured" href="#">Boletos</a>
+        <h3 class="section-kicker members-title" id="members-title">Integrantes</h3>
+        <ul class="members-grid" aria-labelledby="members-title">
+          <li class="member-card member-card--berna is-active">
+            <button class="member-trigger" type="button" aria-pressed="true">
+              <span class="member-media"><img src="./assets/members/Berna%20Franco.jpg" alt="" width="1440" height="1440" loading="lazy" decoding="async"></span>
+              <span class="member-content"><span class="member-num">01</span><span class="member-name">Berna Franco</span><span class="member-role">Voz</span></span>
+            </button>
+          </li>
+          <li class="member-card member-card--osmar">
+            <button class="member-trigger" type="button" aria-pressed="false">
+              <span class="member-media"><img src="./assets/members/Osmio.png" alt="" width="516" height="710" loading="lazy" decoding="async"></span>
+              <span class="member-content"><span class="member-num">02</span><span class="member-name">Osmar David</span><span class="member-role">Primera guitarra</span></span>
+            </button>
+          </li>
+          <li class="member-card member-card--checo">
+            <button class="member-trigger" type="button" aria-pressed="false">
+              <span class="member-media"><img src="./assets/members/Checo%20Rums.webp" alt="" width="1080" height="1350" loading="lazy" decoding="async"></span>
+              <span class="member-content"><span class="member-num">03</span><span class="member-name">Checo Rums</span><span class="member-role">Guitarra rítmica</span></span>
+            </button>
+          </li>
+          <li class="member-card member-card--misael">
+            <button class="member-trigger" type="button" aria-pressed="false">
+              <span class="member-media"><img src="./assets/members/Misa.jpg" alt="" width="1440" height="1920" loading="lazy" decoding="async"></span>
+              <span class="member-content"><span class="member-num">04</span><span class="member-name">Misael Martínez</span><span class="member-role">Bajo</span></span>
+            </button>
+          </li>
+        </ul>
       </div>
-      <div class="show-item">
-        <div class="show-date">
-          <div class="show-day">22</div>
-          <div class="show-month">Mar 2025</div>
-        </div>
-        <div class="show-info">
-          <div class="show-venue">El Otro Foro</div>
-          <div class="show-city">Guadalajara · 20:00h</div>
-        </div>
-        <div class="show-support">Presentación especial</div>
-        <a class="show-btn" href="#">Info</a>
-      </div>
-      <div class="show-item">
-        <div class="show-date">
-          <div class="show-day">05</div>
-          <div class="show-month">Abr 2025</div>
-        </div>
-        <div class="show-info">
-          <div class="show-venue">Foro Independiente</div>
-          <div class="show-city">Monterrey · 21:30h</div>
-        </div>
-        <div class="show-support">Fecha por confirmar</div>
-        <a class="show-btn" href="#">Pronto</a>
-      </div>
-    </div>
-  </div>
+    </section>
 
-  <hr class="divider">
+    <section class="content-section" id="musica" aria-labelledby="music-title">
+      <div class="container">
+        <p class="section-kicker">Discografía</p>
+        <h2 id="music-title">La música</h2>
+        <p class="body-copy">Dos canciones para empezar a encontrarnos. Escúchalas en los perfiles oficiales de la banda.</p>
+        <ol class="song-list">
+          <li><span class="number">01</span><strong>Voy a enloquecer</strong></li>
+          <li><span class="number">02</span><strong>Al Final</strong></li>
+        </ol>
+        <nav class="platform-links" aria-label="Escuchar en plataformas">
+          <a href="https://open.spotify.com/intl-es/artist/3LQ4pmhDhArw0KeCPmTYzK">Spotify</a>
+          <a href="https://music.apple.com/es/artist/d%C3%B3nde-est%C3%A1-boc/1872153764">Apple Music</a>
+          <a href="https://www.youtube.com/@D%C3%B3ndeEst%C3%A1BOC">YouTube</a>
+        </nav>
+      </div>
+    </section>
 
-  <!-- CONTACTO -->
-  <div id="contacto">
-    <p class="section-label">Booking & prensa</p>
-    <h2 class="section-title">Contacto</h2>
-    <div class="contact-grid">
-      <div>
-        <p class="contact-intro">
-          ¿Quieres a BOC en tu foro, festival o evento? ¿Prensa, entrevistas, colaboraciones?<br><br>
-          Escríbenos. BOC aparece donde lo llaman.
-        </p>
-        <div class="contact-item">
-          <span class="contact-label">Email general</span>
-          <a class="contact-val" href="mailto:contacto@dondeestaboc.com">contacto@dondeestaboc.com</a>
+    <section class="content-section" id="shows" aria-labelledby="shows-title">
+      <div class="container">
+        <p class="section-kicker">En vivo</p>
+        <h2 id="shows-title">Próximo show</h2>
+        <div class="show-card">
+          <div>
+            <h3>Ben Gurión</h3>
+            <p>Estamos preparando este concierto. Anunciaremos la fecha y los boletos cuando estén confirmados.</p>
+          </div>
+          <p class="show-status">Fecha por anunciar</p>
         </div>
-        <div class="contact-item">
-          <span class="contact-label">Booking</span>
-          <a class="contact-val" href="mailto:booking@dondeestaboc.com">booking@dondeestaboc.com</a>
+        <div class="actions"><a class="button secondary" href="https://www.instagram.com/donde_esta_boc/">Seguir novedades en Instagram</a></div>
+      </div>
+    </section>
+
+    <section class="content-section" id="contacto" aria-labelledby="contact-title">
+      <div class="container contact-layout">
+        <div>
+          <p class="section-kicker">Booking · Prensa · Colaboraciones</p>
+          <h2 id="contact-title">Hablemos.</h2>
+          <p>¿Quieres a BOC en un foro, festival o evento? Escríbenos por nuestro perfil oficial. De momento, este es el canal de contacto disponible.</p>
         </div>
-        <div class="contact-item">
-          <span class="contact-label">Instagram</span>
-          <a class="contact-val" href="https://www.instagram.com/donde_esta_boc/" target="_blank">@donde_esta_boc</a>
+        <div class="contact-card">
+          <strong>Encuéntranos</strong>
+          <p>Cuéntanos quién eres, qué propones y cómo podemos responderte.</p>
+          <a class="button" href="https://www.instagram.com/donde_esta_boc/">Escribir por Instagram</a>
         </div>
       </div>
-      <div class="contact-form">
-        <div class="form-field">
-          <label>Nombre</label>
-          <input type="text" placeholder="Tu nombre">
-        </div>
-        <div class="form-field">
-          <label>Email</label>
-          <input type="email" placeholder="tu@email.com">
-        </div>
-        <div class="form-field">
-          <label>Motivo</label>
-          <select>
-            <option value="">Selecciona...</option>
-            <option>Booking / Shows</option>
-            <option>Prensa / Entrevistas</option>
-            <option>Colaboración</option>
-            <option>Otro</option>
-          </select>
-        </div>
-        <div class="form-field">
-          <label>Mensaje</label>
-          <textarea rows="4" placeholder="Cuéntanos..."></textarea>
-        </div>
-        <button class="form-submit"
-          onclick="this.textContent='Enviado ✓'; this.style.background='#1a6b3a'; setTimeout(()=>{this.textContent='Enviar mensaje';this.style.background=''},3000)">
-          Enviar mensaje
-        </button>
-      </div>
-    </div>
-  </div>
+    </section>
+  </main>
 
-  <!-- FOOTER -->
   <footer>
-    <div class="footer-logo">¿Dónde está <span>BOC</span>?</div>
-    <div class="footer-copy">© 2026 BOC · Todos los derechos reservados by The Fixers Mx</div>
-    <div class="footer-social">
-      <a href="https://www.instagram.com/donde_esta_boc/" target="_blank">Instagram</a>
-      <a href="https://open.spotify.com" target="_blank">Spotify</a>
-      <a href="https://www.youtube.com" target="_blank">YouTube</a>
+    <div class="container footer-inner">
+      <div class="footer-brand">¿Dónde está <span>BOC?</span></div>
+      <nav class="footer-links" aria-label="Perfiles oficiales">
+        <a href="https://www.instagram.com/donde_esta_boc/">Instagram</a>
+        <a href="https://open.spotify.com/intl-es/artist/3LQ4pmhDhArw0KeCPmTYzK">Spotify</a>
+        <a href="https://music.apple.com/es/artist/d%C3%B3nde-est%C3%A1-boc/1872153764">Apple Music</a>
+        <a href="https://www.youtube.com/@D%C3%B3ndeEst%C3%A1BOC">YouTube</a>
+      </nav>
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2026 ¿Dónde está BOC?</p>
+        <div class="footer-credit">
+          <span class="footer-credit-mark" aria-hidden="true">TF</span>
+          <span class="footer-credit-text">Sitio desarrollado por <strong>The Fixers Mx</strong></span>
+        </div>
+      </div>
     </div>
   </footer>
-
   <script>
-    const sections = document.querySelectorAll('[id]');
-    const navLinks = document.querySelectorAll('nav ul a');
-    window.addEventListener('scroll', () => {
-      let current = '';
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop - 100;
-        if (scrollY >= sectionTop) current = section.getAttribute('id');
-      });
-      navLinks.forEach(link => {
-        link.style.color = link.getAttribute('href') === '#' + current ? '#f0ebe3' : '';
-      });
+    const marqueeControl = document.querySelector('.marquee-control');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    function updateMarqueeControl() {
+      const paused = document.body.dataset.motion === 'paused';
+      marqueeControl.textContent = paused ? 'Reanudar' : 'Pausar';
+      marqueeControl.setAttribute('aria-label', paused ? 'Reanudar animaciones' : 'Pausar animaciones');
+    }
+
+    document.body.dataset.motion = reducedMotion.matches ? 'paused' : 'running';
+    updateMarqueeControl();
+    marqueeControl.addEventListener('click', () => {
+      document.body.dataset.motion = document.body.dataset.motion === 'paused' ? 'running' : 'paused';
+      updateMarqueeControl();
     });
-    document.querySelectorAll('.track').forEach((track, i) => {
-      const num = track.querySelector('.track-num');
-      const orig = num.textContent;
-      track.addEventListener('mouseenter', () => { num.textContent = '▶'; });
-      track.addEventListener('mouseleave', () => { num.textContent = orig; });
+    reducedMotion.addEventListener('change', event => {
+      if (event.matches) {
+        document.body.dataset.motion = 'paused';
+        updateMarqueeControl();
+      }
+    });
+
+    const memberButtons = [...document.querySelectorAll('.member-trigger')];
+    memberButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        memberButtons.forEach(current => {
+          const selected = current === button;
+          current.setAttribute('aria-pressed', String(selected));
+          current.closest('.member-card').classList.toggle('is-active', selected);
+        });
+      });
     });
   </script>
 </body>
